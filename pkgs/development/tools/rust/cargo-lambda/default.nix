@@ -10,7 +10,7 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-lambda";
-  version = "0.13.0";
+  version = "0.14.0";
 
   src = fetchFromGitHub {
     owner = pname;
@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-JwrTwCn4qXcjXjy4cPYM3WCblJS0J5Xxnc6WESMwCpU=";
   };
 
-  cargoSha256 = "sha256-p3q5S6IFQQgNp/MHGSUE1DVLFyMLWDTv/dxrUACKSWo=";
+  cargoSha256 = "sha256-4nDJf2sWi17JsfY+FZjHdlz0ygjiZJY2mUxRdKO8iTY=";
 
   nativeBuildInputs = [ makeWrapper ];
 
