@@ -1,7 +1,10 @@
 { lib
+, cacert
 , rustPlatform
 , fetchFromGitHub
 , makeWrapper
+, pkg-config
+, openssl
 , stdenv
 , Security
 , zig
@@ -18,15 +21,28 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-un+GQflxhMHCMH5UEeUVsYx59ryn7MR4ApooeOuhccc=";
   };
 
-  cargoSha256 = "sha256-p3q5S6IFQQgNp/MHGSUE1DVLFyMLWDTv/dxrUACKSWo=";
+  cargoLock = {
+    lockFile = ./Cargo.lock;
 
-  nativeBuildInputs = [ makeWrapper ];
+    outputHashes = {
+      "cargo-test-macro-0.1.0" = "sha256-XvTKAbP/r1BthpEM84CYZ2yfJczxqzscGkN4JXLgvfA=";
+    };
+  };
 
-  buildInputs = lib.optionals stdenv.isDarwin [ Security ];
+  nativeBuildInputs = [ cacert makeWrapper pkg-config ];
+
+  buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [ Security ];
 
   checkFlags = [
-    # Disabled because it accesses the network.
+    # Disabled because they accesses the network.
+    "--skip=test_build_basic_extension"
+    "--skip=test_build_basic_function"
+    "--skip=test_build_http_function"
+    "--skip=test_build_logs_extension"
+    "--skip=test_build_telemetry_extension"
     "--skip=test_download_example"
+    "--skip=test_init_subcommand"
+    "--skip=test_init_subcommand_without_override"
   ];
 
   # remove date from version output to make reproducible
